@@ -8,7 +8,7 @@ public class TransmissionConfiguration : IEntityTypeConfiguration<Transmission>
 {
     public void Configure(EntityTypeBuilder<Transmission> builder)
     {
-        builder.ToTable("Brands").HasKey(x => x.Id);
+        builder.ToTable("Transmissions").HasKey(x => x.Id);
         builder.Property(x => x.Id).HasColumnName("Id").IsRequired();
         builder.Property(x => x.Name).HasColumnName("Name").IsRequired();
         builder.Property(x => x.CreatedDate).HasColumnName("CreatedDate").IsRequired();
