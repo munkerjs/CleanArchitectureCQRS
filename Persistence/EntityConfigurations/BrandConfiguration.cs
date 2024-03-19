@@ -20,6 +20,9 @@ public class BrandConfiguration : IEntityTypeConfiguration<Brand>
         builder.Property(x=> x.UpdatedDate).HasColumnName("UpdatedDate");
         builder.Property(x=> x.DeletedDate).HasColumnName("DeletedDate");
 
+        builder.HasIndex(indexExpression: b=> b.Name, name:"UK_Brands_Name").IsUnique(); // aynı marka adından sadece bir tane olabilir.
+        builder.HasMany(b => b.Models); // bir marka birden çok modele sahip olabilir.
+
         builder.HasQueryFilter(x => !x.DeletedDate.HasValue);
     }
 }
