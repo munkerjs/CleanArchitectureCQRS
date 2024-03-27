@@ -37,6 +37,7 @@ public static class ApplicationServiceRegistration
         });
 
         services.AddSingleton<LoggerServiceBase, FileLogger>(); // istediğiniz gibi çalışma alanını değiştirebilirsiniz.
+        services.AddSingleton<LoggerServiceBase, MsSqlLogger>(); // istediğiniz gibi çalışma alanını değiştirebilirsiniz.
 
         return services;
     }
