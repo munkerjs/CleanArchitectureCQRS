@@ -1,6 +1,8 @@
 ﻿using Application.Features.Brands.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Caching;
+using Core.Application.Pipelines.Logging;
 using Core.Application.Pipelines.Transaction;
 using Domain.Entities;
 using MediatR;
@@ -14,12 +16,18 @@ namespace Application.Features.Brands.Commands.Create;
 
 // CQRS Kullanılacak.
 
-public class CreateBrandCommand : IRequest<CreatedBrandResponse>, ITransactionalRequest
+public class CreateBrandCommand : IRequest<CreatedBrandResponse>, ITransactionalRequest, ICacheRemoverRequest, ILoggableRequest
 {
     // Veritabanında belkide 10 tane kolon var ama biz sadece kullanıcıdan aşağıdaki alanları alacağız.
     // Yani kullanıcının marka oluşturma isteğine göre alınacak alanları aşağıda tanımlıyoruz.
 
     public string Name { get; set; }
+
+    public string CacheKey => "";
+
+    public bool BypassCache => false;
+
+    public string? CacheGroupKey => "GetBrands";
 
     public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, CreatedBrandResponse>
     {
@@ -42,7 +50,7 @@ public class CreateBrandCommand : IRequest<CreatedBrandResponse>, ITransactional
             brand.Id = Guid.NewGuid();
 
             await _brandRepository.AddAsync(brand);
-            await _brandRepository.AddAsync(brand);
+            //await _brandRepository.AddAsync(brand);
 
             CreatedBrandResponse createdBrandResponse = _mapper.Map<CreatedBrandResponse>(brand);  
             return createdBrandResponse;
